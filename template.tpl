@@ -267,7 +267,7 @@ const copyFromDataLayer = require('copyFromDataLayer');
 
 var kkstrack = copyFromDataLayer('kkstrack');
 
-if (!kkstrack && data.orderId && data.orderValue && data.merchantInfo) {
+if (!kkstrack && !!data.orderId && !!data.orderValue && !!data.merchantInfo) {
   kkstrack = {
          "merchantInfo": data.merchantInfo,
          "orderValue": data.orderValue,
