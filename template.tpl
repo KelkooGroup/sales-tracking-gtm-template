@@ -243,7 +243,12 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true,
     "displayName": "Order Id variable",
     "help": "Provide a variable which contains a unique order identifier for each transaction.\nIf you use The e-Commerce Google Conversion Tag, then you can use the transaction_id variable.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
-    "valueHint": "{{transaction_id}}"
+    "valueHint": "{{transaction_id}}",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
   },
   {
     "type": "TEXT",
@@ -251,7 +256,12 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Order value variable",
     "simpleValueType": true,
     "help": "Provide a variable which contains transaction value (total value of the basket, dot as decimal separator) for each transaction. If you use The e-Commerce Google Conversion Tag, then you can use the “value” variable. If you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
-    "valueHint": "{{value}}"
+    "valueHint": "{{value}}",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
   }
 ]
 
