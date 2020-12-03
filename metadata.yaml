@@ -2,9 +2,11 @@ homepage: "https://www.kelkoogroup.com/"
 documentation: "https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/"
 versions:
   # Latest Version 
+  - sha: d539f5971d967a71bbf843991d369c178884e656
+    changeNotes: Make orderId and orderValue mandatory
+  # Older versions
   - sha: c7f2205ead67aeb34be3eb02e295c254380ee35b
     changeNotes: Ignore order value and order id equals to 0
-  # Older versions
   - sha: deba55dd55f68c38a670a5f577681d5546304454
     changeNotes: Add variables to template to avoid datalayer push
   - sha: 6a0f8e856dbbbe32bef5a577d31aab1225926f42
