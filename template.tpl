@@ -262,6 +262,21 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ]
+  },
+  {
+    "type": "TEXT",
+    "name": "items",
+    "displayName": "Basket items variable",
+    "simpleValueType": true,
+    "help": "Exemple of variable content: \n[\n{     id:\"P12345\",    \n name: \"Android Warhol T-Shirt\",   \n  brand: \"Google\",    \n category: \"Apparel/T-Shirts\", \n    coupon: \"SUMMER_DISCOUNT\", \n    list_name: \"Search Results\",     \nlist_position: 1,    \n price: 14.99,    \n quantity: 2,    \n variant: \"Black\"   \n}\n]",
+    "valueHint": "{{items}}"
+  },
+  {
+    "type": "TEXT",
+    "name": "sku",
+    "displayName": "Product SKU variable",
+    "simpleValueType": true,
+    "valueHint": "{{sku}}"
   }
 ]
 
@@ -274,26 +289,35 @@ log('data =', data);
 
 const injectScript = require('injectScript');
 const copyFromDataLayer = require('copyFromDataLayer');
+const setInWindow = require('setInWindow');
 
 var kkstrack = copyFromDataLayer('kkstrack');
+var kkltrack = copyFromDataLayer('kkltrack');
 
 if (!kkstrack && !!data.orderId && !!data.orderValue && !!data.merchantInfo) {
+// confirmation page
   kkstrack = {
          "merchantInfo": data.merchantInfo,
          "orderValue": data.orderValue,
-         "orderId": data.orderId
+         "orderId": data.orderId,
+         "items": data.items         
       };
-}
+} else if (!kkltrack && !!data.sku) {
+// all other pages
+  kkltrack = {
+    "sku": data.sku
+  };
+} 
 
 if (kkstrack){
   // Call KK conversion js
   const convurl = 'https://s.kk-resources.com/ks.js';
-  const setInWindow = require('setInWindow');
   setInWindow('_kkstrack', kkstrack, true);
   injectScript(convurl, data.gtmOnSuccess, data.gtmOnFailure);
 } else {
   // Call KK lead js
   const leadurl = 'https://s.kk-resources.com/leadtag.js';
+  setInWindow('_kkltrack', kkltrack, true);
   injectScript(leadurl, data.gtmOnSuccess, data.gtmOnFailure);
 }
 
@@ -334,6 +358,10 @@ ___WEB_PERMISSIONS___
               {
                 "type": 1,
                 "string": "kkstrack"
+              },
+              {
+                "type": 1,
+                "string": "kkltrack"
               }
             ]
           }
@@ -421,6 +449,45 @@ ___WEB_PERMISSIONS___
                     "boolean": true
                   }
                 ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "_kkltrack"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
               }
             ]
           }
@@ -454,4 +521,5 @@ scenarios:
 ___NOTES___
 
 Created on 26/02/2020 à 15:18:14
+
 
