@@ -2,9 +2,11 @@ homepage: "https://www.kelkoogroup.com/"
 documentation: "https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/"
 versions:
   # Latest Version 
+  - sha: abb52e592a3c6ca362982393a09c19516c1f30ba
+    changeNotes: Add remarketing parameters (items and sku)
+  # Older versions
   - sha: d539f5971d967a71bbf843991d369c178884e656
     changeNotes: Make orderId and orderValue mandatory
-  # Older versions
   - sha: c7f2205ead67aeb34be3eb02e295c254380ee35b
     changeNotes: Ignore order value and order id equals to 0
   - sha: deba55dd55f68c38a670a5f577681d5546304454
