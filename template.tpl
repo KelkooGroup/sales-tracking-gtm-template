@@ -300,7 +300,7 @@ if (!kkstrack && !!data.orderId && !!data.orderValue && !!data.merchantInfo) {
          "merchantInfo": data.merchantInfo,
          "orderValue": data.orderValue,
          "orderId": data.orderId,
-         "items": data.items         
+         "basket": data.items         
       };
 } else if (!kkltrack && !!data.sku) {
 // all other pages
