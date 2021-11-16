@@ -277,6 +277,13 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Product SKU variable",
     "simpleValueType": true,
     "valueHint": "{{sku}}"
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "events",
+    "checkboxText": "Do not send GA events",
+    "simpleValueType": true,
+    "help": "Check this if you have conflicts with another tag that trigger on conversion or purchase Google Analytics events."
   }
 ]
 
@@ -310,8 +317,13 @@ if (!kkstrack && !!data.orderId && !!data.orderValue && !!data.merchantInfo) {
 } 
 
 if (kkstrack){
-  // Call KK conversion js
-  const convurl = 'https://s.kk-resources.com/ks.js';
+  // Call KK conversion js  
+  var convurl = 'https://s.kk-resources.com/ks.js';
+  
+  if (data.events) {
+    convurl = 'https://s.kk-resources.com/kst.js';
+  }
+  
   setInWindow('_kkstrack', kkstrack, true);
   injectScript(convurl, data.gtmOnSuccess, data.gtmOnFailure);
 } else {
@@ -521,5 +533,3 @@ scenarios:
 ___NOTES___
 
 Created on 26/02/2020 à 15:18:14
-
-
