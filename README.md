@@ -18,8 +18,13 @@ Make sure you have a **Merchant Id** and **Country code** that you can find on t
 1. On the `Templates` tab, click on the button `Search Gallery` of the block `Tag Templates` 
 1. Search for the Kelkoo Group Sales Tracking Tag, select it, and in the `Template Details` click to the button `Add to workspace`
 1. Add a new tag, search for the Kelkoo Group Sales Tracking Tag custom template and select it
-1. Configure the variables (country, merchantId, orderId, orderValue)
-1. Select the "all page view" trigger for the tag
+1. Configure the variables:
+    * comId (Merchant ID) — always mandatory; country — optional two-letter code of the campaign
+    * orderId and orderValue — leave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, they are then read automatically
+    * Basket / Items and the optional order fields (currency, VAT amount, shipping cost, coupon, discount amount, affiliation, returning customer, payment status, customer lifetime value) — leave blank to have them read automatically from the data layer, or map them to a variable to use a non-standard data layer key or override the automatically read value
+1. Select the trigger for the tag:
+    * recommended: a Custom Event trigger on your purchase event, and tick "This tag fires only on the purchase event"
+    * legacy: the "all page view" trigger, with the orderId or orderValue variable mapped (a sale is then only sent when one of them holds a value)
 1. Save the tag
 
 
