@@ -381,13 +381,27 @@ var kkltrack = copyFromDataLayer('kkltrack');
 const OPTIONAL_ORDER_FIELDS = ['currency', 'vatAmount', 'shippingCost', 'coupon', 'discountAmount',
                                'affiliation', 'returningUser', 'paymentStatus', 'customerLifetimeValue'];
 
-// Purchase parameters of a gtag eventModel handed over to ks.js, named as in the GA4
-// ecommerce object that ks.js already reads.
-const EVENT_MODEL_FIELDS = ['transaction_id', 'value', 'currency', 'tax', 'shipping', 'coupon', 'affiliation',
-                            'discount', 'items', 'customer_type', 'payment_status', 'customer_lifetime_value'];
+// Purchase parameters handed over to ks.js, named as in the GA4 ecommerce object it already reads.
+const GA4_PURCHASE_FIELDS = ['transaction_id', 'value', 'currency', 'tax', 'shipping', 'coupon', 'affiliation',
+                             'discount', 'items', 'customer_type', 'payment_status', 'customer_lifetime_value'];
 
 function isSet(value) {
   return value !== undefined && value !== null && value !== '';
+}
+
+// Copies the GA4 purchase parameters of source, leaving out anything else (e.g. the gtag
+// send_to / event_callback settings); undefined when none is set.
+function pickPurchaseFields(source) {
+  const purchase = {};
+  var hasPurchaseField = false;
+  for (var j = 0; j < GA4_PURCHASE_FIELDS.length; j++) {
+    var key = GA4_PURCHASE_FIELDS[j];
+    if (isSet(source[key])) {
+      purchase[key] = source[key];
+      hasPurchaseField = true;
+    }
+  }
+  return hasPurchaseField ? purchase : undefined;
 }
 
 const currentEvent = copyFromDataLayer('event');
@@ -416,20 +430,23 @@ if (!kkstrack && !!data.merchantInfo && (!!data.orderId || !!data.orderValue || 
     var field = OPTIONAL_ORDER_FIELDS[i];
     if (isSet(data[field])) kkstrack[field] = data[field];
   }
-  // A purchase sent with gtag only exists in the GTM data model (eventModel), out of ks.js'
-  // reach: hand it over as the ecommerce object ks.js falls back on. An ecommerce purchase
-  // takes precedence and is left for ks.js to read from the data layer as before.
-  if (!hasEcommercePurchase && !!eventModel && (hasEventModelPurchase || currentEvent === 'purchase')) {
-    const purchase = {};
-    var hasPurchaseField = false;
-    for (var j = 0; j < EVENT_MODEL_FIELDS.length; j++) {
-      var key = EVENT_MODEL_FIELDS[j];
-      if (isSet(eventModel[key])) {
-        purchase[key] = eventModel[key];
-        hasPurchaseField = true;
+  // Hand over, as the ecommerce object ks.js falls back on, the purchases ks.js cannot find in
+  // the data layer by itself. An ecommerce purchase takes precedence over an eventModel one.
+  if (hasEcommercePurchase) {
+    // ks.js reads a GA4 ecommerce only when pushed with the 'purchase' event (a UA one under any
+    // event), so a GA4 purchase pushed under a custom event name (e.g. order_complete) is handed
+    // over. Version 1 returns the latest ecommerce push as is, whereas the default version merges
+    // it with the earlier ones (e.g. the items of a view_item not cleared with ecommerce: null).
+    if (currentEvent !== 'purchase') {
+      const latestEcommerce = copyFromDataLayer('ecommerce', 1);
+      if (!!latestEcommerce && !latestEcommerce.purchase && isSet(latestEcommerce.transaction_id)) {
+        kkstrack.ecommerce = pickPurchaseFields(latestEcommerce);
       }
     }
-    if (hasPurchaseField) kkstrack.ecommerce = purchase;
+  } else if (!!eventModel && (hasEventModelPurchase || currentEvent === 'purchase')) {
+    // A purchase sent with gtag only exists in the GTM data model (eventModel), out of ks.js' reach.
+    const eventModelPurchase = pickPurchaseFields(eventModel);
+    if (eventModelPurchase) kkstrack.ecommerce = eventModelPurchase;
   }
 } else if (!kkltrack && !!data.sku) {
 // all other pages
@@ -766,10 +783,48 @@ scenarios:
     runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
 
     assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
-- name: purchase event only with a custom event and a GA4 transaction id - sends the sale
+- name: purchase event only with a custom event and a GA4 transaction id - hands the latest ecommerce push to ks js
   code: |-
     let kkstrack;
-    const model = {"event":"order_complete","ecommerce":{"transaction_id":"T1","value":25}};
+    // Merged data model: the items of an earlier view_item linger next to the purchase ones.
+    const model = {"event":"order_complete","ecommerce":{"transaction_id":"T1","value":25,"items":[{"item_id":"P1","price":25,"quantity":1},{"item_id":"VIEWED","price":9}]}};
+    // Data layer version 1: the latest ecommerce push as is.
+    const latestPush = {"ecommerce":{"transaction_id":"T1","value":25,"currency":"EUR","items":[{"item_id":"P1","price":25,"quantity":1}],"send_to":"G-XXXX"}};
+    mock('copyFromDataLayer', (key, version) => version === 1 ? latestPush[key] : model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.ecommerce).isEqualTo({"transaction_id":"T1","value":25,"currency":"EUR","items":[{"item_id":"P1","price":25,"quantity":1}]});
+- name: purchase event with a GA4 ecommerce - leaves it to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase","ecommerce":{"transaction_id":"T1","value":25}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(kkstrack.ecommerce).isUndefined();
+- name: purchase event only with a UA purchase - sends the sale and leaves it to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"gtm.dom","ecommerce":{"purchase":{"actionField":{"id":"T1","revenue":"25"}}}};
     mock('copyFromDataLayer', (key) => model[key]);
     mock('setInWindow', (key, value, overrideExisting) => {
       if (key === '_kkstrack') kkstrack = value;
@@ -785,19 +840,6 @@ scenarios:
 
     assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
     assertThat(kkstrack.ecommerce).isUndefined();
-- name: purchase event only with a UA purchase - sends the sale
-  code: |-
-    const model = {"event":"gtm.dom","ecommerce":{"purchase":{"actionField":{"id":"T1","revenue":"25"}}}};
-    mock('copyFromDataLayer', (key) => model[key]);
-    const injectedUrls = [];
-    mock('injectScript', (url, onSuccess, onFailure) => {
-      injectedUrls.push(url);
-      onSuccess();
-    });
-
-    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
-
-    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
 - name: gtag eventModel - hands the purchase to ks js
   code: |-
     let kkstrack;
