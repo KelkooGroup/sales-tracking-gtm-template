@@ -41,7 +41,7 @@ ___TEMPLATE_PARAMETERS___
     "simpleTableColumns": [
       {
         "defaultValue": "",
-        "displayName": "merchantId",
+        "displayName": "comId (Merchant ID)",
         "name": "merchantId",
         "type": "TEXT",
         "valueHint": "123456",
@@ -56,180 +56,176 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "country",
         "name": "country",
         "type": "SELECT",
+        "notSetText": "Not set",
         "selectItems": [
           {
             "value": "au",
-            "displayValue": "Australia"
+            "displayValue": "Australia (au)"
           },
           {
             "value": "at",
-            "displayValue": "Austria"
+            "displayValue": "Austria (at)"
           },
           {
             "value": "be",
-            "displayValue": "Belgium"
+            "displayValue": "Belgium (be)"
           },
           {
             "value": "nb",
-            "displayValue": "Belgium Flemish"
+            "displayValue": "Belgium Flemish (nb)"
           },
           {
             "value": "br",
-            "displayValue": "Brazil"
+            "displayValue": "Brazil (br)"
           },
           {
             "value": "ca",
-            "displayValue": "Canada"
+            "displayValue": "Canada (ca)"
           },
           {
             "value": "cz",
-            "displayValue": "Czech"
+            "displayValue": "Czech Republic (cz)"
           },
           {
             "value": "dk",
-            "displayValue": "Denmark"
+            "displayValue": "Denmark (dk)"
           },
           {
             "value": "fi",
-            "displayValue": "Finland"
+            "displayValue": "Finland (fi)"
           },
           {
             "value": "fr",
-            "displayValue": "France"
+            "displayValue": "France (fr)"
           },
           {
             "value": "de",
-            "displayValue": "Germany"
+            "displayValue": "Germany (de)"
           },
           {
             "value": "gr",
-            "displayValue": "Greece"
+            "displayValue": "Greece (gr)"
           },
           {
             "value": "hk",
-            "displayValue": "Hong kong"
+            "displayValue": "Hong Kong (hk)"
           },
           {
             "value": "hu",
-            "displayValue": "Hungary"
+            "displayValue": "Hungary (hu)"
           },
           {
             "value": "in",
-            "displayValue": "India"
+            "displayValue": "India (in)"
           },
           {
             "value": "id",
-            "displayValue": "Indonesia"
+            "displayValue": "Indonesia (id)"
           },
           {
             "value": "ie",
-            "displayValue": "Ireland"
+            "displayValue": "Ireland (ie)"
           },
           {
             "value": "it",
-            "displayValue": "Italy"
+            "displayValue": "Italy (it)"
           },
           {
             "value": "jp",
-            "displayValue": "Japan"
+            "displayValue": "Japan (jp)"
           },
           {
             "value": "my",
-            "displayValue": "Malaysia"
+            "displayValue": "Malaysia (my)"
           },
           {
             "value": "mx",
-            "displayValue": "Mexico"
+            "displayValue": "Mexico (mx)"
           },
           {
             "value": "nl",
-            "displayValue": "Netherlands"
+            "displayValue": "Netherlands (nl)"
           },
           {
             "value": "nz",
-            "displayValue": "New Zeland"
+            "displayValue": "New Zealand (nz)"
           },
           {
             "value": "no",
-            "displayValue": "Norway"
+            "displayValue": "Norway (no)"
           },
           {
             "value": "ph",
-            "displayValue": "Philippines"
+            "displayValue": "Philippines (ph)"
           },
           {
             "value": "pl",
-            "displayValue": "Poland"
+            "displayValue": "Poland (pl)"
           },
           {
             "value": "pt",
-            "displayValue": "Portugal"
+            "displayValue": "Portugal (pt)"
           },
           {
             "value": "ro",
-            "displayValue": "Romania"
+            "displayValue": "Romania (ro)"
           },
           {
             "value": "ru",
-            "displayValue": "Russia"
+            "displayValue": "Russia (ru)"
           },
           {
             "value": "sg",
-            "displayValue": "Singapore"
+            "displayValue": "Singapore (sg)"
           },
           {
             "value": "sk",
-            "displayValue": "Slovakia"
+            "displayValue": "Slovakia (sk)"
           },
           {
             "value": "za",
-            "displayValue": "South africa"
+            "displayValue": "South Africa (za)"
           },
           {
             "value": "kr",
-            "displayValue": "South korea"
+            "displayValue": "South Korea (kr)"
           },
           {
             "value": "es",
-            "displayValue": "Spain"
+            "displayValue": "Spain (es)"
           },
           {
             "value": "se",
-            "displayValue": "Sweden"
+            "displayValue": "Sweden (se)"
           },
           {
             "value": "ch",
-            "displayValue": "Swiss"
+            "displayValue": "Switzerland (ch)"
           },
           {
             "value": "tr",
-            "displayValue": "Turkey"
+            "displayValue": "Turkey (tr)"
           },
           {
             "value": "ae",
-            "displayValue": "UAE"
+            "displayValue": "UAE (ae)"
           },
           {
             "value": "uk",
-            "displayValue": "United Kingdom"
+            "displayValue": "United Kingdom (uk)"
           },
           {
             "value": "us",
-            "displayValue": "USA"
+            "displayValue": "USA (us)"
           },
           {
             "value": "vn",
-            "displayValue": "Vietnam"
-          }
-        ],
-        "valueValidators": [
-          {
-            "type": "NON_EMPTY"
+            "displayValue": "Vietnam (vn)"
           }
         ]
       }
     ],
-    "help": "Provide the kelkoogroup merchant identifier for each of your Kelkoogroup campaigns. You can find it in your Kelkoogroup Merchant Extranet (https://merchant.kelkoogroup.com/app/salesTracking)",
+    "help": "Provide the kelkoogroup merchant identifier (comId) for each of your Kelkoogroup campaigns, and the country of the campaign. The country is optional, but KST support needs it to investigate country-specific campaigns. You can find them in your Kelkoogroup Merchant Extranet (https://merchant.kelkoogroup.com/app/salesTracking)",
     "newRowButtonText": "Add Merchant Id",
     "valueValidators": [
       {
@@ -242,34 +238,113 @@ ___TEMPLATE_PARAMETERS___
     "name": "orderId",
     "simpleValueType": true,
     "displayName": "Order Id variable",
-    "help": "Provide a variable which contains a unique order identifier for each transaction.\nIf you use The e-Commerce Google Conversion Tag, then you can use the transaction_id variable.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
-    "valueHint": "{{transaction_id}}",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ]
+    "help": "Provide a variable which contains a unique order identifier for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the order identifier is then read automatically (ecommerce.transaction_id, or eventModel.transaction_id). Keep the \"This tag fires only on the purchase event\" checkbox below ticked when you leave both Order Id and Order value blank.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
+    "valueHint": "{{transaction_id}}"
   },
   {
     "type": "TEXT",
     "name": "orderValue",
     "displayName": "Order value variable",
     "simpleValueType": true,
-    "help": "Provide a variable which contains transaction value (total value of the basket, dot as decimal separator) for each transaction. If you use The e-Commerce Google Conversion Tag, then you can use the “value” variable. If you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
-    "valueHint": "{{value}}",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ]
+    "help": "Provide a variable which contains transaction value (total value of the basket, dot as decimal separator) for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the value is then read automatically (ecommerce.value or eventModel.value, which exclude tax and shipping in GA4). Keep the \"This tag fires only on the purchase event\" checkbox below ticked when you leave both Order Id and Order value blank.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
+    "valueHint": "{{value}}"
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "purchaseEventOnly",
+    "checkboxText": "This tag fires only on the purchase event",
+    "simpleValueType": true,
+    "defaultValue": true,
+    "help": "Keep this ticked when the tag is triggered by your purchase / order confirmation event (recommended setup). A sale is then sent once a purchase is detected: Order Id or Order value holds a value, the event is named purchase, or the data layer holds a purchase (ecommerce.transaction_id, a Universal Analytics ecommerce.purchase, or a gtag eventModel.transaction_id). Otherwise the tag behaves as on any other page.\nUntick it only for a tag triggered on all pages that relies on Order Id or Order value: a sale is then only sent when one of them holds a value."
   },
   {
     "type": "TEXT",
     "name": "items",
-    "displayName": "Basket items variable",
+    "displayName": "Basket / Items variable",
     "simpleValueType": true,
-    "help": "Exemple of variable content: \n[\n{     id:\"P12345\",    \n name: \"Android Warhol T-Shirt\",   \n  brand: \"Google\",    \n category: \"Apparel/T-Shirts\", \n    coupon: \"SUMMER_DISCOUNT\", \n    list_name: \"Search Results\",     \nlist_position: 1,    \n price: 14.99,    \n quantity: 2,    \n variant: \"Black\"   \n}\n]",
-    "valueHint": "{{items}}"
+    "help": "Optional. Provide a variable which contains the list of purchased products. Leave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the products are then read automatically (ecommerce.items, or eventModel.items).\nExpected shape: [{ productid: \"P12345\", productname: \"Android Warhol T-Shirt\", price: 14.99, quantity: 2 }]\nGA4 items (item_id, item_name, price, quantity) and Universal Analytics products (id, name, price, quantity) are also accepted.",
+    "valueHint": "{{ecommerce.items}}"
+  },
+  {
+    "type": "GROUP",
+    "name": "optionalOrderFields",
+    "displayName": "Optional order fields",
+    "groupStyle": "ZIPPY_CLOSED",
+    "help": "Leave any of these fields blank to have it read automatically from a standard GA4 or Universal Analytics purchase event in your data layer, or, failing that, from a purchase sent with gtag (eventModel, same parameter names as ecommerce). Only fill one in to point to a non-standard data layer key, or to override the automatically read value.",
+    "subParams": [
+      {
+        "type": "TEXT",
+        "name": "currency",
+        "displayName": "Currency variable",
+        "simpleValueType": true,
+        "help": "ISO 4217 currency code of the order. Read automatically from ecommerce.currency when left blank.",
+        "valueHint": "{{ecommerce.currency}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "vatAmount",
+        "displayName": "VAT amount variable",
+        "simpleValueType": true,
+        "help": "Total tax amount of the order (dot as decimal separator). Read automatically from ecommerce.tax when left blank.",
+        "valueHint": "{{ecommerce.tax}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "shippingCost",
+        "displayName": "Shipping cost variable",
+        "simpleValueType": true,
+        "help": "Shipping cost of the order (dot as decimal separator). Read automatically from ecommerce.shipping when left blank.",
+        "valueHint": "{{ecommerce.shipping}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "coupon",
+        "displayName": "Coupon code variable",
+        "simpleValueType": true,
+        "help": "Coupon / promo code used for the order. Read automatically from ecommerce.coupon when left blank.",
+        "valueHint": "{{ecommerce.coupon}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "discountAmount",
+        "displayName": "Discount amount variable",
+        "simpleValueType": true,
+        "help": "Total discount amount of the order (dot as decimal separator). Read automatically from ecommerce.discount, or from the sum of ecommerce.items[].discount, when left blank.",
+        "valueHint": "{{ecommerce.discount}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "affiliation",
+        "displayName": "Affiliation variable",
+        "simpleValueType": true,
+        "help": "Store or affiliation the order was placed on. Read automatically from ecommerce.affiliation when left blank.",
+        "valueHint": "{{ecommerce.affiliation}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "returningUser",
+        "displayName": "Returning customer variable",
+        "simpleValueType": true,
+        "help": "\"true\" if the customer already ordered on your website, \"false\" otherwise. Read automatically from ecommerce.customer_type (\"new\" / \"returning\") when left blank.",
+        "valueHint": "{{returning_customer}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "paymentStatus",
+        "displayName": "Payment status variable",
+        "simpleValueType": true,
+        "help": "Payment status of the order (e.g. paid, pending). Read automatically from ecommerce.payment_status when left blank.",
+        "valueHint": "{{payment_status}}"
+      },
+      {
+        "type": "TEXT",
+        "name": "customerLifetimeValue",
+        "displayName": "Customer lifetime value variable",
+        "simpleValueType": true,
+        "help": "Estimated lifetime value of the customer (dot as decimal separator). Read automatically from ecommerce.customer_lifetime_value when left blank.",
+        "valueHint": "{{customer_lifetime_value}}"
+      }
+    ]
   },
   {
     "type": "TEXT",
@@ -301,14 +376,78 @@ const setInWindow = require('setInWindow');
 var kkstrack = copyFromDataLayer('kkstrack');
 var kkltrack = copyFromDataLayer('kkltrack');
 
-if (!kkstrack && !!data.orderId && !!data.orderValue && !!data.merchantInfo) {
+// Optional order fields, named after the window._kkstrack keys read by ks.js.
+// Left blank, ks.js reads them from the GA4 / UA purchase event of the data layer.
+const OPTIONAL_ORDER_FIELDS = ['currency', 'vatAmount', 'shippingCost', 'coupon', 'discountAmount',
+                               'affiliation', 'returningUser', 'paymentStatus', 'customerLifetimeValue'];
+
+// Purchase parameters handed over to ks.js, named as in the GA4 ecommerce object it already reads.
+const GA4_PURCHASE_FIELDS = ['transaction_id', 'value', 'currency', 'tax', 'shipping', 'coupon', 'affiliation',
+                             'discount', 'items', 'customer_type', 'payment_status', 'customer_lifetime_value'];
+
+function isSet(value) {
+  return value !== undefined && value !== null && value !== '';
+}
+
+// Copies the GA4 purchase parameters of source, leaving out anything else (e.g. the gtag
+// send_to / event_callback settings); undefined when none is set.
+function pickPurchaseFields(source) {
+  const purchase = {};
+  var hasPurchaseField = false;
+  for (var j = 0; j < GA4_PURCHASE_FIELDS.length; j++) {
+    var key = GA4_PURCHASE_FIELDS[j];
+    if (isSet(source[key])) {
+      purchase[key] = source[key];
+      hasPurchaseField = true;
+    }
+  }
+  return hasPurchaseField ? purchase : undefined;
+}
+
+const currentEvent = copyFromDataLayer('event');
+const ecommerce = copyFromDataLayer('ecommerce');
+const eventModel = copyFromDataLayer('eventModel');
+// transaction_id only: GA4 view_item / add_to_cart events also carry a value, which must not
+// make an ordinary page look like a purchase.
+const hasEcommercePurchase = !!ecommerce && (isSet(ecommerce.transaction_id) || !!ecommerce.purchase);
+const hasEventModelPurchase = !!eventModel && isSet(eventModel.transaction_id);
+const purchaseDetected = currentEvent === 'purchase' || hasEcommercePurchase || hasEventModelPurchase;
+
+// A sale is sent when the order id or value holds a value (tag triggered on all pages), or
+// when the merchant states the tag only fires on the purchase event (values read by ks.js)
+// and a purchase is detected, so that a tag triggered on all pages with the checkbox
+// ticked keeps sending the lead tag on ordinary pages.
+if (!kkstrack && !!data.merchantInfo && (!!data.orderId || !!data.orderValue || (data.purchaseEventOnly === true && purchaseDetected))) {
 // confirmation page
   kkstrack = {
-         "merchantInfo": data.merchantInfo,
-         "orderValue": data.orderValue,
-         "orderId": data.orderId,
-         "basket": data.items         
+         "merchantInfo": data.merchantInfo
       };
+  // Only set what resolves, so that ks.js falls back on the data layer for the rest.
+  if (isSet(data.orderValue)) kkstrack.orderValue = data.orderValue;
+  if (isSet(data.orderId)) kkstrack.orderId = data.orderId;
+  if (isSet(data.items)) kkstrack.basket = data.items;
+  for (var i = 0; i < OPTIONAL_ORDER_FIELDS.length; i++) {
+    var field = OPTIONAL_ORDER_FIELDS[i];
+    if (isSet(data[field])) kkstrack[field] = data[field];
+  }
+  // Hand over, as the ecommerce object ks.js falls back on, the purchases ks.js cannot find in
+  // the data layer by itself. An ecommerce purchase takes precedence over an eventModel one.
+  if (hasEcommercePurchase) {
+    // ks.js reads a GA4 ecommerce only when pushed with the 'purchase' event (a UA one under any
+    // event), so a GA4 purchase pushed under a custom event name (e.g. order_complete) is handed
+    // over. Version 1 returns the latest ecommerce push as is, whereas the default version merges
+    // it with the earlier ones (e.g. the items of a view_item not cleared with ecommerce: null).
+    if (currentEvent !== 'purchase') {
+      const latestEcommerce = copyFromDataLayer('ecommerce', 1);
+      if (!!latestEcommerce && !latestEcommerce.purchase && isSet(latestEcommerce.transaction_id)) {
+        kkstrack.ecommerce = pickPurchaseFields(latestEcommerce);
+      }
+    }
+  } else if (!!eventModel && (hasEventModelPurchase || currentEvent === 'purchase')) {
+    // A purchase sent with gtag only exists in the GTM data model (eventModel), out of ks.js' reach.
+    const eventModelPurchase = pickPurchaseFields(eventModel);
+    if (eventModelPurchase) kkstrack.ecommerce = eventModelPurchase;
+  }
 } else if (!kkltrack && !!data.sku) {
 // all other pages
   kkltrack = {
@@ -374,6 +513,18 @@ ___WEB_PERMISSIONS___
               {
                 "type": 1,
                 "string": "kkltrack"
+              },
+              {
+                "type": 1,
+                "string": "event"
+              },
+              {
+                "type": 1,
+                "string": "ecommerce"
+              },
+              {
+                "type": 1,
+                "string": "eventModel"
               }
             ]
           }
@@ -528,6 +679,219 @@ scenarios:
 
     // Verify that the tag finished successfully.
     assertApi('gtmOnSuccess').wasCalled();
+- name: order values set - sends the sale with the resolved fields only
+  code: |-
+    let kkstrack;
+    mock('copyFromDataLayer', (key) => undefined);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"123","orderValue":"12.5","currency":"EUR","vatAmount":"","coupon":undefined});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.orderId).isEqualTo('123');
+    assertThat(kkstrack.orderValue).isEqualTo('12.5');
+    assertThat(kkstrack.currency).isEqualTo('EUR');
+    assertThat(kkstrack.vatAmount).isUndefined();
+    assertThat(kkstrack.coupon).isUndefined();
+    assertThat(kkstrack.basket).isUndefined();
+    assertApi('gtmOnSuccess').wasCalled();
+- name: all pages trigger without order values - sends the lead tag, not a sale
+  code: |-
+    mock('copyFromDataLayer', (key) => undefined);
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":undefined,"orderValue":undefined,"sku":"P123"});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+- name: purchase event only - sends the sale without order values
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase"};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"","orderValue":"","purchaseEventOnly":true,"items":[{"item_id":"P1","item_name":"Shirt","price":10,"quantity":1}]});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.merchantInfo).isEqualTo([{"merchantId":"15121","country":"fr"}]);
+    assertThat(kkstrack.orderId).isUndefined();
+    assertThat(kkstrack.orderValue).isUndefined();
+    assertThat(kkstrack.basket).isEqualTo([{"item_id":"P1","item_name":"Shirt","price":10,"quantity":1}]);
+    assertApi('gtmOnSuccess').wasCalled();
+- name: do not send GA events - uses kst js
+  code: |-
+    mock('copyFromDataLayer', (key) => undefined);
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"123","orderValue":"12.5","events":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/kst.js']);
+    assertApi('gtmOnSuccess').wasCalled();
+- name: purchase event only on a non purchase page - sends the lead tag
+  code: |-
+    const model = {"event":"gtm.js"};
+    mock('copyFromDataLayer', (key) => model[key]);
+    const windowKeys = [];
+    mock('setInWindow', (key, value, overrideExisting) => {
+      windowKeys.push(key);
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"","orderValue":"","purchaseEventOnly":true,"sku":"P123"});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+    assertThat(windowKeys).isEqualTo(['_kkltrack']);
+- name: purchase event only with a view item ecommerce - sends the lead tag
+  code: |-
+    const model = {"event":"view_item","ecommerce":{"currency":"EUR","value":25,"items":[{"item_id":"P1","price":25,"quantity":1}]}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+- name: purchase event only with a custom event and a GA4 transaction id - hands the latest ecommerce push to ks js
+  code: |-
+    let kkstrack;
+    // Merged data model: the items of an earlier view_item linger next to the purchase ones.
+    const model = {"event":"order_complete","ecommerce":{"transaction_id":"T1","value":25,"items":[{"item_id":"P1","price":25,"quantity":1},{"item_id":"VIEWED","price":9}]}};
+    // Data layer version 1: the latest ecommerce push as is.
+    const latestPush = {"ecommerce":{"transaction_id":"T1","value":25,"currency":"EUR","items":[{"item_id":"P1","price":25,"quantity":1}],"send_to":"G-XXXX"}};
+    mock('copyFromDataLayer', (key, version) => version === 1 ? latestPush[key] : model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.ecommerce).isEqualTo({"transaction_id":"T1","value":25,"currency":"EUR","items":[{"item_id":"P1","price":25,"quantity":1}]});
+- name: purchase event with a GA4 ecommerce - leaves it to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase","ecommerce":{"transaction_id":"T1","value":25}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(kkstrack.ecommerce).isUndefined();
+- name: purchase event only with a UA purchase - sends the sale and leaves it to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"gtm.dom","ecommerce":{"purchase":{"actionField":{"id":"T1","revenue":"25"}}}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.ecommerce).isUndefined();
+- name: gtag eventModel - hands the purchase to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase","eventModel":{"transaction_id":"G1","value":80,"currency":"EUR","tax":13.33,"items":[{"item_id":"P1","price":80,"quantity":1}],"send_to":"G-XXXX","event_callback":"callback","coupon":""}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/ks.js']);
+    assertThat(kkstrack.ecommerce).isEqualTo({"transaction_id":"G1","value":80,"currency":"EUR","tax":13.33,"items":[{"item_id":"P1","price":80,"quantity":1}]});
+- name: ecommerce and eventModel - leaves the ecommerce purchase to ks js
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase","ecommerce":{"transaction_id":"T1","value":25},"eventModel":{"transaction_id":"G1","value":80}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"purchaseEventOnly":true});
+
+    assertThat(kkstrack.ecommerce).isUndefined();
+- name: explicit order id with eventModel - keeps the tag input
+  code: |-
+    let kkstrack;
+    const model = {"event":"purchase","eventModel":{"transaction_id":"G1","value":80}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    mock('setInWindow', (key, value, overrideExisting) => {
+      if (key === '_kkstrack') kkstrack = value;
+      return true;
+    });
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"TAG-1","purchaseEventOnly":true});
+
+    assertThat(kkstrack.orderId).isEqualTo('TAG-1');
+    assertThat(kkstrack.ecommerce.transaction_id).isEqualTo('G1');
 
 
 ___NOTES___
