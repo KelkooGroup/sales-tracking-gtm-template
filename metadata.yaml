@@ -4,9 +4,9 @@ versions:
   # Latest Version 
   - sha: 2272225af2f091f0349636288dfa21ee3c2b9215
     changeNotes: Fix tag firing edge case
+  # Older versions
   - sha: a11b6bf9ed9a11989c1f33bbbfc877f087dc07ea
     changeNotes: Expose all order and basket fields as configurable tag input
-  # Older versions
   - sha: e11645d58fe23089a1876e4f5f847ed7acd22ec9
     changeNotes: Add checkbox to not send GA events
   - sha: 7c4e204606f167a7b3de1ce4dd0f43fbaf65a3d5
