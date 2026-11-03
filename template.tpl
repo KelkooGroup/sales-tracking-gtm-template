@@ -238,7 +238,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "orderId",
     "simpleValueType": true,
     "displayName": "Order Id variable",
-    "help": "Provide a variable which contains a unique order identifier for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the order identifier is then read automatically (ecommerce.transaction_id, or eventModel.transaction_id). Keep the \"This tag fires only on the purchase event\" checkbox below ticked when you leave both Order Id and Order value blank.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
+    "help": "Provide a variable which contains a unique order identifier for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the order identifier is then read automatically (ecommerce.transaction_id, or eventModel.transaction_id). Keep the \"This tag fires only on the purchase event\" checkbox below ticked unless you map both Order Id and Order value.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
     "valueHint": "{{transaction_id}}"
   },
   {
@@ -246,7 +246,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "orderValue",
     "displayName": "Order value variable",
     "simpleValueType": true,
-    "help": "Provide a variable which contains transaction value (total value of the basket, dot as decimal separator) for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the value is then read automatically (ecommerce.value or eventModel.value, which exclude tax and shipping in GA4). Keep the \"This tag fires only on the purchase event\" checkbox below ticked when you leave both Order Id and Order value blank.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
+    "help": "Provide a variable which contains transaction value (total value of the basket, dot as decimal separator) for each transaction.\nLeave blank if your data layer pushes a standard GA4 or Universal Analytics purchase event, or sends it with gtag (eventModel): the value is then read automatically (ecommerce.value or eventModel.value, which exclude tax and shipping in GA4). Keep the \"This tag fires only on the purchase event\" checkbox below ticked unless you map both Order Id and Order value.\nIf you used a previous version of the Kelkoo Sales tracking GTM template, then you should have a kkstrack variable available in your datalayer and you can leave this field blank.",
     "valueHint": "{{value}}"
   },
   {
@@ -255,7 +255,7 @@ ___TEMPLATE_PARAMETERS___
     "checkboxText": "This tag fires only on the purchase event",
     "simpleValueType": true,
     "defaultValue": true,
-    "help": "Keep this ticked when the tag is triggered by your purchase / order confirmation event (recommended setup). A sale is then sent once a purchase is detected: Order Id or Order value holds a value, the event is named purchase, or the data layer holds a purchase (ecommerce.transaction_id, a Universal Analytics ecommerce.purchase, or a gtag eventModel.transaction_id). Otherwise the tag behaves as on any other page.\nUntick it only for a tag triggered on all pages that relies on Order Id or Order value: a sale is then only sent when one of them holds a value."
+    "help": "Keep this ticked when the tag is triggered by your purchase / order confirmation event (recommended setup). A sale is then sent once a purchase is detected: both Order Id and Order value hold a value, the event is named purchase, or the data layer holds a purchase (ecommerce.transaction_id, a Universal Analytics ecommerce.purchase, or a gtag eventModel.transaction_id). Otherwise the tag behaves as on any other page.\nUntick it only for a tag triggered on all pages that relies on Order Id and Order value: a sale is then only sent when both of them hold a value."
   },
   {
     "type": "TEXT",
@@ -413,11 +413,12 @@ const hasEcommercePurchase = !!ecommerce && (isSet(ecommerce.transaction_id) || 
 const hasEventModelPurchase = !!eventModel && isSet(eventModel.transaction_id);
 const purchaseDetected = currentEvent === 'purchase' || hasEcommercePurchase || hasEventModelPurchase;
 
-// A sale is sent when the order id or value holds a value (tag triggered on all pages), or
-// when the merchant states the tag only fires on the purchase event (values read by ks.js)
-// and a purchase is detected, so that a tag triggered on all pages with the checkbox
-// ticked keeps sending the lead tag on ordinary pages.
-if (!kkstrack && !!data.merchantInfo && (!!data.orderId || !!data.orderValue || (data.purchaseEventOnly === true && purchaseDetected))) {
+// A sale is sent when both the order id and value hold a value (tag triggered on all pages, as
+// in the released template: a value alone also resolves on cart and checkout pages, where each
+// step would count as a sale), or when the merchant states the tag only fires on the purchase
+// event (values read by ks.js) and a purchase is detected, so that a tag triggered on all pages
+// with the checkbox ticked keeps sending the lead tag on ordinary pages.
+if (!kkstrack && !!data.merchantInfo && ((!!data.orderId && !!data.orderValue) || (data.purchaseEventOnly === true && purchaseDetected))) {
 // confirmation page
   kkstrack = {
          "merchantInfo": data.merchantInfo
@@ -715,6 +716,58 @@ scenarios:
     runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":undefined,"orderValue":undefined,"sku":"P123"});
 
     assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+- name: all pages trigger with an order value only - sends the lead tag, not a sale
+  code: |-
+    // SUP-5314: an order value variable also resolves on cart and checkout pages.
+    const model = {"event":"begin_checkout","ecommerce":{"currency":"EUR","value":540.83,"items":[{"item_id":"P1","price":540.83,"quantity":1}]}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    const windowKeys = [];
+    mock('setInWindow', (key, value, overrideExisting) => {
+      windowKeys.push(key);
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"","orderValue":"540.83","sku":"P1"});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+    assertThat(windowKeys).isEqualTo(['_kkltrack']);
+- name: all pages trigger with an order id only - sends the lead tag, not a sale
+  code: |-
+    mock('copyFromDataLayer', (key) => undefined);
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"123","orderValue":""});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+- name: purchase event only with an order value on a checkout step - sends the lead tag
+  code: |-
+    // SUP-5314: same checkout step with the checkbox ticked, no transaction id, not the purchase event.
+    const model = {"event":"add_shipping_info","ecommerce":{"currency":"EUR","value":540.83,"items":[{"item_id":"P1","price":540.83,"quantity":1}]}};
+    mock('copyFromDataLayer', (key) => model[key]);
+    const windowKeys = [];
+    mock('setInWindow', (key, value, overrideExisting) => {
+      windowKeys.push(key);
+      return true;
+    });
+    const injectedUrls = [];
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      injectedUrls.push(url);
+      onSuccess();
+    });
+
+    runCode({"merchantInfo":[{"merchantId":"15121","country":"fr"}],"orderId":"","orderValue":"540.83","purchaseEventOnly":true});
+
+    assertThat(injectedUrls).isEqualTo(['https://s.kk-resources.com/leadtag.js']);
+    assertThat(windowKeys).isEqualTo(['_kkltrack']);
 - name: purchase event only - sends the sale without order values
   code: |-
     let kkstrack;
