@@ -2,6 +2,8 @@ homepage: "https://www.kelkoogroup.com/"
 documentation: "https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/"
 versions:
   # Latest Version 
+  - sha: 2272225af2f091f0349636288dfa21ee3c2b9215
+    changeNotes: Fix tag firing edge case
   - sha: a11b6bf9ed9a11989c1f33bbbfc877f087dc07ea
     changeNotes: Expose all order and basket fields as configurable tag input
   # Older versions
